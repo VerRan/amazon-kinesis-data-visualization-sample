@@ -92,3 +92,12 @@ The sample application creates one Amazon Kinesis Stream and two Amazon DynamoDB
 [iam-role]: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html
 [iam-roles-java-sdk]: http://docs.aws.amazon.com/AWSSdkDocsJava/latest/DeveloperGuide/java-dg-roles.html
 [maven]: http://maven.apache.org/
+
+#关键类说明
+**HttpReferrerStreamWriter.java 将网站访问记录写入kinesis stream 中，这里为了测试该类模拟多个线程（用户）
+随机访问给定的网站列表，用于模拟用户的并发访问。 同时针对kinesis如果不存在指定名称的
+kinesis-stream则自动创建
+**HttpReferrerCounterApplication.java 通过kinesis api从stream中读取访问记录，同时
+通过CountingRecordProcessorFactory 对数据进行统计，同时将统计结果写入dynamoDB
+**WebServer.java 启动内嵌的jetty ，创建servlet 访问dynamoDB获取到统计数据，
+然后使用jquery-flot 绘制图表
